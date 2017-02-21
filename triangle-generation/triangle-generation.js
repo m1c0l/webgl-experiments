@@ -19,33 +19,16 @@ window.onload = function init()
     // First, initialize the corners of our gasket with three points.
 
     var vertices = [
-        vec2( -1, -1 ),
-        vec2(  0,  1 ),
-        vec2(  1, -1 )
+        vec2(0, 0.5),
+        vec2(0.5, 0.7),
+        vec2(0.7, 0),
     ];
-
-    // Specify a starting point p for our iterations
-    // p must lie inside any set of three vertices
-
-    var u = add( vertices[0], vertices[1] );
-    var v = add( vertices[0], vertices[2] );
-    var p = scale( 0.25, add( u, v ) );
-
-    // And, add our initial point into our array of points
-
-    points = [ p ];
-
-    // Compute new points
-    // Each new point is located midway between
-    // last point and a randomly chosen vertex
-
-    for ( var i = 0; points.length < NumPoints; ++i ) {
-        var j = Math.floor(Math.random() * 3);
-        p = add( points[i], vertices[j] );
-        p = scale( 0.5, p );
-        points.push( p );
-    }
-
+    points = [
+        vertices[0], vertices[1],
+        vertices[1], vertices[2],
+        vertices[2], vertices[0]
+    ];
+    gl.lineWidth(5);
     //
     //  Configure WebGL
     //
@@ -75,5 +58,5 @@ window.onload = function init()
 
 function render() {
     gl.clear( gl.COLOR_BUFFER_BIT );
-    gl.drawArrays( gl.POINTS, 0, points.length );
+    gl.drawArrays( gl.LINES, 0, points.length );
 }

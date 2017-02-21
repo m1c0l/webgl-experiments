@@ -10,7 +10,7 @@ attribute vec4 vPosition;
 void
 main()
 {
-	gl_PointSize = 1.0;
+    gl_PointSize = 20.0;
     gl_Position = vPosition;
 }
 </script>
@@ -21,18 +21,18 @@ precision mediump float;
 void
 main()
 {
-    gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+    gl_FragColor = vec4( 0.0, 0.0, 0.0, 1.0 );
 }
 </script>
 
 <script type="text/javascript" src="../Common/webgl-utils.js"></script>
 <script type="text/javascript" src="../Common/initShaders.js"></script>
 <script type="text/javascript" src="../Common/MV.js"></script>
-<script type="text/javascript" src="gasket1.js"></script>
+<script type="text/javascript" src="triangle-generation.js"></script>
 </head>
 
 <body>
-<canvas id="gl-canvas" width="512" height="512">
+<canvas id="gl-canvas" width="640" height="640">
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
 </body>
