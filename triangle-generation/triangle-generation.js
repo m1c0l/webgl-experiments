@@ -2,8 +2,8 @@
 
 var gl;
 var points;
+var bufferId;
 
-var NumPoints = 5000;
 
 window.onload = function init()
 {
@@ -16,18 +16,7 @@ window.onload = function init()
     //  Initialize our data for the Sierpinski Gasket
     //
 
-    // First, initialize the corners of our gasket with three points.
-
-    var vertices = [
-        vec2(0, 0.5),
-        vec2(0.5, 0.7),
-        vec2(0.7, 0),
-    ];
-    points = [
-        vertices[0], vertices[1],
-        vertices[1], vertices[2],
-        vertices[2], vertices[0]
-    ];
+    // doesn't work on Windows but does on Linux
     gl.lineWidth(5);
     //
     //  Configure WebGL
@@ -42,9 +31,8 @@ window.onload = function init()
 
     // Load the data into the GPU
 
-    var bufferId = gl.createBuffer();
+    bufferId = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
 
     // Associate out shader variables with our data buffer
 
@@ -57,6 +45,37 @@ window.onload = function init()
 
 
 function render() {
+    var angles = {};
+    angles.deg = [
+        parseInt(document.getElementById("angle1").value),
+        parseInt(document.getElementById("angle2").value),
+        parseInt(document.getElementById("angle3").value)
+    ];
+    // sort descending
+    angles.deg.sort(function(a, b) {
+        return b - a;
+    });
+    angles.rad = [
+        radians(angles.deg[0]),
+        radians(angles.deg[1]),
+        radians(angles.deg[2])
+    ];
+    console.log(angles);
+    var A = 0.5 * Math.sin(angles.rad[0]) / Math.sin(angles.rad[1]);
+    var thirdPt = vec2(A * Math.cos(angles.rad[2]), A * Math.sin(angles.rad[2]));
+    var vertices = [
+        vec2(0, 0),
+        vec2(0.5, 0),
+        thirdPt
+    ];
+    console.log(vertices);
+    points = [
+        vertices[0], vertices[1],
+        vertices[1], vertices[2],
+        vertices[2], vertices[0]
+    ];
+    gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
     gl.clear( gl.COLOR_BUFFER_BIT );
     gl.drawArrays( gl.LINES, 0, points.length );
 }
