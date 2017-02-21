@@ -12,10 +12,6 @@ window.onload = function init()
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
-    //
-    //  Initialize our data for the Sierpinski Gasket
-    //
-
     // doesn't work on Windows but does on Linux
     gl.lineWidth(5);
     //
@@ -45,6 +41,7 @@ window.onload = function init()
 
 
 function render() {
+    // get angle inputs
     var angles = {};
     angles.deg = [
         parseInt(document.getElementById("angle1").value),
@@ -60,6 +57,8 @@ function render() {
         radians(angles.deg[1]),
         radians(angles.deg[2])
     ];
+    // make first two points fixed at (0, 0) and (0.5, 0) and
+    // calculate third point using sine law and polar coordinates
     console.log(angles);
     var A = 0.5 * Math.sin(angles.rad[0]) / Math.sin(angles.rad[1]);
     var thirdPt = vec2(A * Math.cos(angles.rad[2]), A * Math.sin(angles.rad[2]));
@@ -69,6 +68,7 @@ function render() {
         thirdPt
     ];
     console.log(vertices);
+    // draw lines between the points
     points = [
         vertices[0], vertices[1],
         vertices[1], vertices[2],
